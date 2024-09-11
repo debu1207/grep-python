@@ -9,6 +9,12 @@ def match_pattern(input_line, pattern):
         return pattern in input_line
 
     elif pattern[0] == '[' and pattern[-1] == ']':
+        if pattern[1] and pattern[1] == '^':
+            for c in input_line:
+                if c in pattern:
+                    return False
+            return True
+
         for c in input_line:
             if c in pattern:
                 return True
