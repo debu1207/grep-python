@@ -11,6 +11,10 @@ def match_pattern(input_line, pattern):
     if not input_line:
         return False
 
+    if pattern[-1] == '$':
+        l = len(pattern[:-1])
+        return input_line[-l:] == pattern[:-1]
+
     if pattern[0] == '^':
         return match_pattern(input_line, pattern[1:])
 
@@ -24,8 +28,8 @@ def match_pattern(input_line, pattern):
         return ((input_line[0].isalnum() or input_line[0] == '_') and match_pattern(input_line[1:], pattern[2:])) or match_pattern(input_line[1:], pattern)
 
     elif pattern[0] == '[' and ']' in pattern:
+        idx = pattern.find("]")
         if pattern[1] and pattern[1] == '^':
-            idx = pattern.find("]")
             if idx == -1:
                 return False
             newpattern = pattern[2:idx]
@@ -33,9 +37,10 @@ def match_pattern(input_line, pattern):
                 if c in input_line:
                     return False
             return True
+        newpattern = pattern[1:idx]
 
-        for c in input_line:
-            if c in pattern:
+        for c in pattern:
+            if c in input_line:
                 return True
         return False
     else:
@@ -50,8 +55,10 @@ def main():
         exit(1)
 
     if match_pattern(input_line, pattern):
+        print("Match\n");
         exit(0)
     else:
+        print("Not match\n");
         exit(1)
 
 
