@@ -8,6 +8,12 @@ def match_pattern(input_line, pattern):
     if len(pattern) == 1:
         return pattern in input_line
 
+    elif pattern[0] == '[' and pattern[-1] == ']':
+        for c in input_line:
+            if c in pattern:
+                return True
+        return False
+
     elif pattern == '\\w':
         for c in input_line:
             if c.isalnum():
