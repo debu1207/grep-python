@@ -7,6 +7,13 @@ import sys
 def match_pattern(input_line, pattern):
     if len(pattern) == 1:
         return pattern in input_line
+
+    elif pattern == '\\w':
+        for c in input_line:
+            if c.isalnum():
+                return True
+        return False
+
     elif pattern == '\\d':
         for c in input_line:
             if c.isdigit():
