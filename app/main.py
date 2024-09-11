@@ -5,8 +5,28 @@ import sys
 
 
 def match_pattern(input_line, pattern):
-    if len(pattern) == 1:
-        return pattern in input_line
+    if len(input_line) == 0 and len(pattern) == 0:
+        return True
+
+    if not pattern:
+        return True
+
+    if not input_line:
+        return False
+
+    if pattern[0] == input_line[0]:
+        return match_pattern(input_line[1:], pattern[1:])
+
+    elif pattern[:2] == '\\d':
+        for i in range(len(input_line)):
+            if input_line[i].isdigit():
+                return match_pattern(input_line[i:], pattern[2:])
+        return False
+
+    elif pattern[:2] == '\\w':
+        if input_line[0].isalnum():
+            return match_pattern(input_line[1:], pattern[2:])
+        return False
 
     elif pattern[0] == '[' and pattern[-1] == ']':
         if pattern[1] and pattern[1] == '^':
@@ -20,21 +40,8 @@ def match_pattern(input_line, pattern):
                 return True
         return False
 
-    elif pattern == '\\w':
-        for c in input_line:
-            if c.isalnum():
-                return True
-        return False
-
-    elif pattern == '\\d':
-        for c in input_line:
-            if c.isdigit():
-                return True
-        return False
-
     else:
-        raise RuntimeError(f"Unhandled pattern: {pattern}")
-
+        return match_pattern(input_line[1:], pattern) 
 
 def main():
     pattern = sys.argv[2]
