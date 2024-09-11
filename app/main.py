@@ -19,6 +19,12 @@ def match_pattern(input_line, pattern):
         return match_pattern(input_line, pattern[1:])
 
     elif pattern[0] == input_line[0]:
+        if len(pattern) >= 2 and pattern[1] and pattern[1] == '+':
+            idx = 0
+            while (input_line[idx] == input_line[0]):
+                idx += 1
+            return match_pattern(input_line[idx:], pattern[2:])
+
         return match_pattern(input_line[1:], pattern[1:])
 
     elif pattern[:2] == '\\d':
